@@ -14,9 +14,18 @@ export class BooksController {
     async getAllBooks(): Promise<Book[]>{
         return await this.bookService.getAllBooks()
     }
-    @Get(':id')
+    @Get('id/:id')
     async getBookById(@Param('id') id: string): Promise<Book>{
         return this.bookService.getBookById(id)
+    }
+    @Get('author/:authorName')
+    async getBookByAuthorName(@Param('authorName') authorName: string): Promise<Book[]>{
+        return await this.bookService.getBookByAuthorName(authorName)
+    }
+
+    @Get('name/:bookName')
+    async getBookName(@Param('bookName') bookName: string): Promise<Book[]>{
+        return await this.bookService.getBookName(bookName)
     }
 
     @Post()
@@ -25,8 +34,8 @@ export class BooksController {
     }
 
     @Put(':id')
-    async updateBook(@Param('id') id: string, @Body() updateBook: BookDTO): Promise<Book>{
-        return await this.bookService.updateBook(id, updateBook)
+    async updateBookById(@Param('id') id: string, @Body() updateBook: BookDTO): Promise<Book>{
+        return await this.bookService.updateBookById(id, updateBook)
     }
 
     @Delete(':id')

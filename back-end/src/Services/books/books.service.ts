@@ -28,12 +28,35 @@ export class BooksService {
         }
     }
 
+    async getBookByAuthorName(authorName: string): Promise<Book[]>{
+        try {
+            const splitedAuthorName = authorName.split(' ')
+            return await this.bookRepository.getBookByAuthorName(splitedAuthorName)
+        } catch (err) {
+            throw new BadRequestException('Erro, is not exist result witch this search')
+        }
+    }
+
+    async getBookName(bookName: string): Promise<Book[]>{
+        try{
+            return await this.bookRepository.getBookName(bookName)
+        } catch (err) {
+            throw new BadRequestException('Erro, is not exist result witch this search')
+        }
+    }
+
     async saveBook(newBook: BookDTO): Promise<Book>{
         return await this.bookRepository.saveBook(newBook)
     }
-    async updateBook(id: string, updateBook: BookDTO): Promise<Book>{
+    async updateBookById(id: string, updateBook: BookDTO): Promise<Book>{
         try {
-            return await this.bookRepository.updateBook(id, updateBook)
+            const book =  await this.bookRepository.getBookById(id)
+            
+            if(!book){
+                throw new BadRequestException('Erro is not exist result witch this id')    
+            } else {
+                return await this.bookRepository.updateBookById(id, updateBook)
+            }
         } catch (err) {
             throw new BadRequestException('Erro to update')
         }
@@ -42,8 +65,13 @@ export class BooksService {
 
     async deleteBook(id: string): Promise<Book>{
         try {
-
-        return await this.bookRepository.deleteBook(id) 
+            const book =  await this.bookRepository.getBookById(id)
+            
+            if(!book){
+                throw new BadRequestException('Erro is not exist result witch this id')
+            } else {
+                return await this.bookRepository.deleteBook(id)
+            } 
         } catch (erro) {
             throw new BadRequestException('Erro try delete');
             
