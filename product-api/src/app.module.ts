@@ -6,7 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose'
 @Module({
   imports: [
     ProductModule,
-    MongooseModule.forRoot('mongodb+srv://api:api@123@cluster0-0dcp5.mongodb.net/crud-nestjs?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+    MongooseModule.forRoot(
+      'mongodb://root:root@localhost:27017/crud-nestjs?authSource=admin', 
+      { 
+        useNewUrlParser: true,
+        useUnifiedTopology: true 
+      }
+    )
   ],
   controllers: [AppController],
   providers: [],
